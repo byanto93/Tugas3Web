@@ -1,0 +1,13 @@
+<div
+v-if="show"
+class="modal"
+
+@click.self="$emit('close')">
+
+    <div class="modal-content">
+
+        <slot></slot>
+
+    </div>
+
+</div>

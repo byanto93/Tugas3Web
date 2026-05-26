@@ -1,0 +1,30 @@
+<div>
+
+    <span
+    v-if="qty <= 0"
+    class="badge danger"
+    :title="catatan">
+
+        Kosong
+
+    </span>
+
+    <span
+    v-else-if="qty < safety"
+    class="badge warning"
+    :title="catatan">
+
+        Menipis
+
+    </span>
+
+    <span
+    v-else
+    class="badge success"
+    :title="catatan">
+
+        Aman
+
+    </span>
+
+</div>

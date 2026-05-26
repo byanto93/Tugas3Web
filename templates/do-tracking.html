@@ -1,0 +1,269 @@
+<div>
+
+    <h2>
+        Tracking Delivery Order
+    </h2>
+
+    <!-- SEARCH -->
+
+    <input
+
+    v-model="keyword"
+
+    @keyup.enter="cariData"
+
+    @keyup.esc="resetCari"
+
+    placeholder="
+    Cari Nomor DO / NIM
+    ">
+
+    <button
+    @click="cariData">
+
+        Cari
+
+    </button>
+
+    <button
+    @click="resetCari">
+
+        Reset
+
+    </button>
+
+    <hr>
+
+    <!-- BUTTON -->
+
+    <button
+    @click="showForm=true">
+
+        Tambah DO
+
+    </button>
+
+    <!-- MODAL FORM -->
+
+    <app-modal
+
+    :show="showForm"
+
+    @close="closeForm">
+
+    <div>
+
+        <h3>
+            Tambah Delivery Order
+        </h3>
+
+        <input
+        v-model="form.nim"
+        placeholder="NIM">
+
+        <input
+        v-model="form.nama"
+        placeholder="Nama">
+
+        <select
+        v-model="form.ekspedisi">
+
+            <option value="">
+                Pilih Ekspedisi
+            </option>
+
+            <option
+            v-for="e in pengiriman">
+
+                {{ e.nama }}
+
+            </option>
+
+        </select>
+
+        <select
+        v-model="form.paket">
+
+            <option value="">
+                Pilih Paket
+            </option>
+
+            <option
+            v-for="p in paket"
+            :value="p.kode">
+
+                {{ p.kode }}
+                -
+                {{ p.nama }}
+
+            </option>
+
+        </select>
+
+        <!-- DETAIL PAKET -->
+
+        <div
+        v-if="selectedPaket">
+
+            <p>
+
+                Total Harga:
+                {{ selectedPaket.harga | rupiah }}
+
+            </p>
+
+            <ul>
+
+                <li
+                v-for="
+                isi
+                in selectedPaket.isi
+                ">
+
+                    {{ isi }}
+
+                </li>
+
+            </ul>
+
+        </div>
+
+        <br>
+
+        <button
+        @click="tambahDO">
+
+            Simpan DO
+
+        </button>
+
+        <button
+        @click="closeForm">
+
+            Batal
+
+        </button>
+
+    </div>
+
+    </app-modal>
+
+    <hr>
+
+    <!-- HASIL -->
+
+    <div
+    v-if="hasil"
+    class="tracking-card">
+
+        <h3>
+
+            {{ hasil.nama }}
+
+        </h3>
+
+        <p>
+
+            <span
+
+            class="badge"
+
+            :class="
+            hasil.status == 'Diproses'
+            ?
+            'warning'
+            :
+            'success'
+            ">
+
+                {{ hasil.status }}
+
+            </span>
+
+        </p>
+
+        <p>
+
+            Nomor DO:
+            {{ hasil.nomor }}
+
+        </p>
+
+        <p>
+
+            Ekspedisi:
+            {{ hasil.ekspedisi }}
+
+        </p>
+
+        <p>
+
+            Paket:
+            {{ hasil.paket }}
+
+        </p>
+
+        <p>
+
+            Tanggal Kirim:
+            {{ hasil.tanggalKirim }}
+
+        </p>
+
+        <p>
+
+            Total:
+            {{ hasil.total | rupiah }}
+
+        </p>
+
+        <hr>
+
+        <!-- TAMBAH PROGRESS -->
+
+        <h4>
+            Tambah Progress
+        </h4>
+
+        <input
+        v-model="progressBaru"
+        @keyup.enter="tambahProgress"
+        placeholder="Keterangan perjalanan">
+
+        <button
+        @click="tambahProgress">
+
+            Tambah Progress
+
+        </button>
+
+        <hr>
+
+        <!-- PERJALANAN -->
+
+        <ul>
+
+            <li
+            v-for="
+            item
+            in hasil.perjalanan
+            ">
+
+                {{ item.waktu }}
+                -
+                {{ item.keterangan }}
+
+            </li>
+
+        </ul>
+
+    </div>
+
+    <div
+    v-if="!hasil && keyword">
+
+        Data tracking tidak ditemukan
+
+    </div>
+
+</div>
